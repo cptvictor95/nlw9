@@ -6,3 +6,4 @@
 - ExpressJS
 - ReactJS
 - ReactNative
+- Tailwind CSS
