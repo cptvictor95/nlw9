@@ -7,6 +7,12 @@
 id
 title
 bannerUrl
+
+### Ad
+
+id
+gameId
+name
 yearsPlaying
 discord
 weekDays
@@ -14,8 +20,6 @@ hourStart
 hourEnd
 useVoiceChannel
 createdAt
-
-### Ad
 
 ## Use cases
 
