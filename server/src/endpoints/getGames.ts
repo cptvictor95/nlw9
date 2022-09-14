@@ -1,17 +1,9 @@
 import { Request, Response } from "express";
-import connection from "../connection";
+import { queryGames } from "../queries/queryGames";
 
 export const getGames = async (req: Request, res: Response) => {
   try {
-    const games = await connection.game.findMany({
-      include: {
-        _count: {
-          select: {
-            ads: true,
-          },
-        },
-      },
-    });
+    const games = await queryGames();
 
     return res.status(200).json(games);
   } catch (error: any) {

@@ -1,28 +1,13 @@
 import { Request, Response } from "express";
 import connection from "../connection";
+import { queryAdsByGameId } from "../queries/queryAdsByGameId";
 import { convertMinutesToHourString } from "../utils/convertMinutesToHourString";
 
 export const getAdsByGame = async (req: Request, res: Response) => {
   try {
     const gameId = req.params.id as string;
 
-    const ads = await connection.ad.findMany({
-      select: {
-        id: true,
-        name: true,
-        weekDays: true,
-        useVoiceChannel: true,
-        yearsPlaying: true,
-        hourStart: true,
-        hourEnd: true,
-      },
-      where: {
-        gameId,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    const ads = await queryAdsByGameId(gameId);
 
     return res.status(200).json(
       ads.map((ad) => {

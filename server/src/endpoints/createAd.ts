@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import connection from "../connection";
+import { insertAd } from "../queries/insertAd";
 import { convertHourStringToMinutes } from "../utils/convertHourStringToMinutes";
 
 export const createAd = async (req: Request, res: Response) => {
@@ -7,17 +8,9 @@ export const createAd = async (req: Request, res: Response) => {
     const gameId = req.params.gameId as string;
     const newAd = req.body.ad;
 
-    await connection.ad.create({
-      data: {
-        ...newAd,
-        gameId,
-        weekDays: newAd.weekDays.join(","),
-        hourStart: convertHourStringToMinutes(newAd.hourStart),
-        hourEnd: convertHourStringToMinutes(newAd.hourEnd),
-      },
-    });
+    const createdAd = await insertAd(gameId, newAd);
 
-    return res.status(201).json(newAd);
+    return res.status(201).json(createdAd);
   } catch (error: any) {
     return res.status(error.code).json({ error: error.message });
   }
