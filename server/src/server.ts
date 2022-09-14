@@ -1,14 +1,6 @@
-import express from "express";
-
-// ECMAScript
-
-const app = express();
+import app from "./app";
 
 const PORT = 3001;
-
-app.get("/ads", (req, res) => {
-  return res.send("Acessou Ads!");
-});
 
 const server = app.listen(PORT, () => {
   if (!server) {
