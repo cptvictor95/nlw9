@@ -12,6 +12,7 @@ export const createAd = async (req: Request, res: Response) => {
 
     return res.status(201).json(createdAd);
   } catch (error: any) {
-    return res.status(error.code).json({ error: error.message });
+    console.error(error);
+    return res.status(400).send({ error: error.message });
   }
 };
