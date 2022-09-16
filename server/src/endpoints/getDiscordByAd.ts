@@ -10,6 +10,6 @@ export const getDiscordByAd = async (req: Request, res: Response) => {
 
     return res.status(200).json({ discord });
   } catch (error: any) {
-    return res.status(error.code).json({ error: error.message });
+    return res.status(error.code).send({ error: error.message });
   }
 };
