@@ -10,6 +10,7 @@ import { THEME } from "../../theme";
 import logoImg from "../../assets/logo-nlw-esports.png";
 import { Heading } from "../../components/Heading";
 import { DuoCard } from "../../components/DuoCard";
+import { DuoMatch } from "../../components/DuoMatch";
 
 interface Ad {
   id: string;
@@ -26,6 +27,7 @@ export function Game() {
   const nav = useNavigation();
   const game = route.params as GameParams;
   const [ads, setAds] = useState<Ad[]>([]);
+  const [discordDuoSelected, setDiscordDuoSelected] = useState("");
 
   const handleGetGames = async () => {
     try {
@@ -41,6 +43,14 @@ export function Game() {
 
   const handleGoBack = () => {
     nav.goBack();
+  };
+
+  const handleShowMatch = async (adId: string) => {
+    const res = await fetch(`http://192.168.15.5:3001/ads/${adId}/discord`)
+      .then((res) => res.json())
+      .then((data) => data.discord);
+
+    setDiscordDuoSelected(res.discord);
   };
 
   useEffect(() => {
@@ -62,24 +72,28 @@ export function Game() {
           <Image source={logoImg} style={styles.logo} />
           <View style={styles.spacer} />
         </View>
-
         <Image
           source={{ uri: game.bannerUrl }}
           style={styles.cover}
           resizeMode="cover"
         />
         <Heading title={game.title} subtitle="Conecte-se e comece a jogar!" />
-
         <FlatList
           data={ads}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <DuoCard data={item} onConnect={() => {}} />
+            <DuoCard data={item} onConnect={() => handleShowMatch(item.id)} />
           )}
           horizontal
           style={styles.containerList}
           contentContainerStyle={styles.contentList}
           showsHorizontalScrollIndicator={false}
+        />
+
+        <DuoMatch
+          discord={discordDuoSelected}
+          visible={discordDuoSelected.length > 0}
+          onClose={() => setDiscordDuoSelected("")}
         />
       </SafeAreaView>
     </Background>
